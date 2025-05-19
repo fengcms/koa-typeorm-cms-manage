@@ -1,6 +1,6 @@
 <template>
   <PageMain v-loading="pageInfo.loading">
-    <el-form ref="ruleForm" :model="form" :rules="rules" label-width="80px">
+    <el-form ref="ruleForm" :model="form" :rules="rules" label-width="90px">
       <el-form-item label="站点名称" prop="name">
         <el-input v-model="form.name" style="width: 500px" />
       </el-form-item>
@@ -18,8 +18,12 @@
       <el-form-item label="站点描述" prop="description">
         <el-input v-model="form.description" type="textarea" :rows="3" style="width: 500px" />
       </el-form-item>
-      <el-form-item label="版权" prop="copyright">
+      <el-form-item label="PC端版权" prop="copyright">
         <el-input v-model="form.copyright" type="textarea" :rows="3" style="width: 500px" />
+        <Tip>支持HTML</Tip>
+      </el-form-item>
+      <el-form-item label="移动端版权" prop="mobile_copyright">
+        <el-input v-model="form.mobile_copyright" type="textarea" :rows="3" style="width: 500px" />
         <Tip>支持HTML</Tip>
       </el-form-item>
       <el-form-item>
@@ -33,7 +37,7 @@
 import editPage from '@/mixin/editPage'
 export default {
   mixins: [editPage],
-  data () {
+  data() {
     return {
       pageInfo: {
         apiName: 'site',
@@ -46,15 +50,9 @@ export default {
         channel: []
       },
       rules: {
-        title: [
-          { required: true, message: '请输入文章标题', trigger: 'blur' }
-        ],
-        content: [
-          { required: true, message: '请输入文章内容', trigger: 'blur' }
-        ],
-        channel: [
-          { required: true, message: '请选择文章归属栏目', trigger: 'blur' }
-        ]
+        title: [{ required: true, message: '请输入文章标题', trigger: 'blur' }],
+        content: [{ required: true, message: '请输入文章内容', trigger: 'blur' }],
+        channel: [{ required: true, message: '请选择文章归属栏目', trigger: 'blur' }]
       },
       base: {
         treeChannel: [],
@@ -62,8 +60,7 @@ export default {
       }
     }
   },
-  created () {},
-  methods: {
-  }
+  created() {},
+  methods: {}
 }
 </script>

@@ -23,6 +23,11 @@
         <el-form-item label="人员备注" prop="mark">
           <el-input v-model="form.mark" type="textarea" autocomplete="off" style="width: 500px" />
         </el-form-item>
+        <el-form-item label="人员状态" clearable prop="status">
+            <el-radio-group v-model="form.status">
+              <el-radio v-for="i in base.status" :key="i.value" :label="i.value">{{ i.label }}</el-radio>
+            </el-radio-group>
+          </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="close">取 消</el-button>
@@ -36,7 +41,7 @@
 import editDialog from '@/mixin/editDialog'
 export default {
   mixins: [editDialog],
-  data () {
+  data() {
     return {
       pageInfo: {
         apiName: 'reporter'
@@ -47,27 +52,25 @@ export default {
         avatar: '',
         email: '',
         website: '',
-        mark: ''
+        mark: '',
+        status: 'NORMAL'
       },
       rules: {
         name: [
           { required: true, message: '请输入姓名', trigger: 'blur' },
           { min: 1, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ],
-        code: [
-          { required: true, message: '请输入证件号码', trigger: 'blur' },
-        ],
-        position: [
-          { required: true, message: '请输入工作职位', trigger: 'blur' },
-        ],
-        mobile: [
-          { pattern: /^1[3456789]\d{9}$/i, message: '手机号格式不正确', trigger: 'blur' }
-        ],
-        email: [
-          { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }
-        ],
-        website: [
-          { type: 'url', message: '网址格式不正确', trigger: 'blur' }
+        code: [{ required: true, message: '请输入证件号码', trigger: 'blur' }],
+        position: [{ required: true, message: '请输入工作职位', trigger: 'blur' }],
+        mobile: [{ pattern: /^1[3456789]\d{9}$/i, message: '手机号格式不正确', trigger: 'blur' }],
+        email: [{ type: 'email', message: '邮箱格式不正确', trigger: 'blur' }],
+        website: [{ type: 'url', message: '网址格式不正确', trigger: 'blur' }]
+      },
+      base: {
+        status: [
+          { label: '已通过', value: 'NORMAL' },
+          { label: '待审核', value: 'PENDING' },
+          { label: '未通过', value: 'FAILURE' }
         ]
       }
     }

@@ -71,7 +71,7 @@ export default {
       this.$emit('close')
     },
     submit() {
-      this.$refs.ruleForm.validate((valid) => {
+      this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
           if (this.sumbiting) return
           this.sumbiting = true
@@ -81,7 +81,7 @@ export default {
             if (beforeSubmit != null) return
           }
           // 深拷贝提交数据
-          const data = this.calcSubmitData ? this.calcSubmitData({ ...this.form }) : { ...this.form }
+          const data = this.calcSubmitData ? await this.calcSubmitData({ ...this.form }) : { ...this.form }
           const { apiName } = this.pageInfo
           request({
             url: this.isEdit ? `${apiName}/${this.editId || this.editDat.id}` : apiName,

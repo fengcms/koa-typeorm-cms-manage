@@ -117,11 +117,11 @@ export default {
         return false
       }
     },
-    calcSubmitData(data) {
-      // if (data.password) {
-      //   const { rsaKey } = this.user
-      //   data.password = rsaEncrypt(SHA256(data.password), rsaKey)
-      // }
+    async calcSubmitData(data) {
+      if (data.password) {
+        const { rsaKey } = this.user
+        data.password = await rsaEncrypt(rsaKey, await SHA256(data.password))
+      }
       return data
     },
     beforeClose() {

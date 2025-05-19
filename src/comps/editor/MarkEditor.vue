@@ -7,12 +7,10 @@
 <script>
 import { StaticDomain } from '@/config'
 import breaks from '@bytemd/plugin-breaks'
-// import { MarkdownPro } from 'vue-meditor-fungleo'
 import gfm from '@bytemd/plugin-gfm'
 import highlight from '@bytemd/plugin-highlight-ssr'
 import { Editor, Viewer } from '@bytemd/vue'
 import upload from './mixin/upload'
-const editor = {}
 const plugins = [
   gfm(),
   breaks(),
@@ -49,11 +47,6 @@ export default {
     }
   },
   methods: {
-    ready(el) {
-      editor.vm = el.vm
-      editor.insert = el.insertContent
-      this.content = this.value
-    },
     upImg(file) {
       this.upload(file[0]).then(({ name, path }) => {
         const imgMdStr = `\n![${name}](${StaticDomain}${path})\n`

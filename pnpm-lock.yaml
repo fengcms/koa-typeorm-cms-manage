@@ -59,9 +59,6 @@ importers:
       vue:
         specifier: 2.7.16
         version: 2.7.16
-      vue-meditor-fungleo:
-        specifier: ^2.1.1
-        version: 2.1.1
       vue-router:
         specifier: 3.0.6
         version: 3.0.6(vue@2.7.16)
@@ -1548,9 +1545,6 @@ packages:
         optional: true
       yaml:
         optional: true
-
-  vue-meditor-fungleo@2.1.1:
-    resolution: {integrity: sha512-D59inngmfvgrmTjVNWhrBNraBcuEDdIxzoRf9TOvPaBhtOqaUNnx1jffEhZoAryrXNhWib7ozcLYsij+FMy6zA==}
 
   vue-router@3.0.6:
     resolution: {integrity: sha512-Ox0ciFLswtSGRTHYhGvx2L44sVbTPNS+uD2kRISuo8B39Y79rOo0Kw0hzupTmiVtftQYCZl87mwldhh2L9Aquw==}
@@ -3257,8 +3251,6 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
       sass: 1.66.0
-
-  vue-meditor-fungleo@2.1.1: {}
 
   vue-router@3.0.6(vue@2.7.16):
     dependencies:

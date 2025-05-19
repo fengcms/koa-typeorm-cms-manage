@@ -20,6 +20,7 @@ import Comps from '@/comps'
 
 import Directive from '@/directive'
 import '@wangeditor/editor/dist/css/style.css'
+import 'bytemd/dist/index.css'
 
 Vue.use(VueCompositionAPI)
 Vue.use(ElementUI, { size: 'medium' })

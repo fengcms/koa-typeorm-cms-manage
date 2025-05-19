@@ -40,6 +40,7 @@ export default {
         MENU_CONF: {
           uploadImage: {
             customUpload: (file, insertFn) => {
+              console.log(file)
               this.upload(file).then(({ path }) => {
                 insertFn(path)
               })

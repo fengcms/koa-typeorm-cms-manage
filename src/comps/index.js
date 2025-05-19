@@ -18,7 +18,6 @@ import Tip from './Tip'
 import UpImg from './UpImg'
 import VideoTool from './VideoTool'
 import MarkEditor from './editor/MarkEditor'
-import RichEditor from './editor/RichEditor'
 import WangEditor from './editor/WangEditor'
 
 const comps = [
@@ -32,7 +31,6 @@ const comps = [
   Tag,
   UpImg,
   ImageList,
-  RichEditor,
   WangEditor,
   FlexBox,
   FlexItem,
@@ -64,7 +62,6 @@ export default {
   Tag,
   UpImg,
   ImageList,
-  RichEditor,
   WangEditor,
   FlexBox,
   FlexItem,

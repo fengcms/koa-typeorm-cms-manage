@@ -55,14 +55,14 @@ service.interceptors.response.use(
           location.reload()
         })
       })
-    } else {
-      Message({
-        message: data.msg || error.message || 'Error',
-        type: 'error',
-        duration: 5000
-      })
       return Promise.reject(error)
     }
+    Message({
+      message: data.msg || error.message || 'Error',
+      type: 'error',
+      duration: 5000
+    })
+    return Promise.reject(error)
   }
 )
 

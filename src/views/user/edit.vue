@@ -60,12 +60,11 @@
 </template>
 <script>
 import editDialog from '@/mixin/editDialog'
-import { mapState } from 'vuex'
 // import { rsaEn } from '@/utils/tools'
-import { rsaEncrypt, SHA256 } from '@/utils/crypto'
+import { SHA256, rsaEncrypt } from '@/utils/crypto'
+import { mapState } from 'vuex'
 export default {
-  mixins: [editDialog],
-  data () {
+  data() {
     return {
       pageInfo: {
         apiName: 'user'
@@ -95,18 +94,10 @@ export default {
           { required: true, message: '请输入姓名', trigger: 'blur' },
           { min: 1, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ],
-        editor: [
-          { required: true, message: '请选择常用编辑器', trigger: 'blur' }
-        ],
-        mobile: [
-          { pattern: /^1[3456789]\d{9}$/i, message: '手机号格式不正确', trigger: 'blur' }
-        ],
-        email: [
-          { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }
-        ],
-        website: [
-          { type: 'url', message: '网址格式不正确', trigger: 'blur' }
-        ]
+        editor: [{ required: true, message: '请选择常用编辑器', trigger: 'blur' }],
+        mobile: [{ pattern: /^1[3456789]\d{9}$/i, message: '手机号格式不正确', trigger: 'blur' }],
+        email: [{ type: 'email', message: '邮箱格式不正确', trigger: 'blur' }],
+        website: [{ type: 'url', message: '网址格式不正确', trigger: 'blur' }]
       },
       base: {
         status: [
@@ -118,21 +109,22 @@ export default {
     }
   },
   computed: { ...mapState(['user']) },
+  mixins: [editDialog],
   methods: {
-    beforeSubmit () {
+    beforeSubmit() {
       if (!this.isEdit && !this.user.rsaKey) {
         this.$message.error('RSA加密公钥丢失，请重新登录后重新尝试操作！')
         return false
       }
     },
-    calcSubmitData (data) {
-      if (data.password) {
-        const { rsaKey } = this.user
-        data.password = rsaEncrypt(SHA256(data.password), rsaKey)
-      }
+    calcSubmitData(data) {
+      // if (data.password) {
+      //   const { rsaKey } = this.user
+      //   data.password = rsaEncrypt(SHA256(data.password), rsaKey)
+      // }
       return data
     },
-    beforeClose () {
+    beforeClose() {
       this.changePassword = false
     }
   }

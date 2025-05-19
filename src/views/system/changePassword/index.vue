@@ -23,16 +23,16 @@
 </template>
 <script>
 // import { rsaEn } from '@/utils/tools'
-import { rsaEncrypt, SHA256 } from '@/utils/crypto'
-import { mapState } from 'vuex'
+import { SHA256, rsaEncrypt } from '@/utils/crypto'
 import request from '@/utils/request'
+import { mapState } from 'vuex'
 export default {
-  data () {
+  data() {
     const validatePass = (rule, value, callback, str) => {
       if (value === '') {
         callback(new Error(`请输入${str}密码`))
-      } else if (value.length < 8) {
-        callback(new Error(`密码长度必须是8位以上哦！`))
+      } else if (value.length < 6) {
+        callback(new Error('密码长度必须是6位以上哦！'))
       } else {
         if (this.form.checkPassword !== '') {
           this.$refs.ruleForm.validateField('checkPass')
@@ -56,9 +56,9 @@ export default {
         sumbiting: false
       },
       form: {
-        oldPassword: '',
-        newPassword: '',
-        checkPassword: ''
+        oldPassword: 'admin888',
+        newPassword: '123456',
+        checkPassword: '123456'
       },
       rules: {
         oldPassword: [{ required: true, validator: validateOldPass, trigger: 'blur' }],
@@ -69,31 +69,31 @@ export default {
   },
   computed: { ...mapState(['user']) },
   methods: {
-    submit () {
+    submit() {
       const { rsaKey } = this.user
       if (!rsaKey) {
         this.$message.error('RSA加密公钥丢失，请重新登录后重新尝试操作！')
         return false
       }
-      this.$refs['ruleForm'].validate((valid) => {
+      this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
           const { oldPassword, newPassword } = this.form
           const data = {
-            oldPassword: rsaEncrypt(SHA256(oldPassword), rsaKey),
-            newPassword: rsaEncrypt(SHA256(newPassword), rsaKey)
+            oldPassword: await rsaEncrypt(rsaKey, await SHA256(oldPassword)),
+            newPassword: await rsaEncrypt(rsaKey, await SHA256(newPassword))
           }
           request({
             url: 'change_password',
             method: 'post',
             data
-          }).then(r => {
+          }).then((r) => {
             this.$message.success('密码修改成功！')
           })
         }
       })
     },
-    resetForm () {
-      this.$refs['ruleForm'].resetFields()
+    resetForm() {
+      this.$refs.ruleForm.resetFields()
     }
   }
 }

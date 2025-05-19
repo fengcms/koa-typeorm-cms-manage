@@ -14,7 +14,7 @@ export default {
       default: null
     }
   },
-  data () {
+  data() {
     return {
       pageInfo: {},
       sumbiting: false,
@@ -26,13 +26,13 @@ export default {
     }
   },
   methods: {
-    async init () {
-      this.beforeInit && await this.beforeInit()
+    async init() {
+      this.beforeInit && (await this.beforeInit())
       if (this.editId || this.editDat) {
         this.actionText = '编辑'
         this.isEdit = true
         this.loading.detail = true
-        this.beforeGetData && this.beforeGetData()
+        if (this.beforeGetData) this.beforeGetData()
         const calcResponse = (resp, asyn) => {
           if (this.afterGetData) {
             const afterGetData = this.afterGetData(resp)
@@ -47,35 +47,37 @@ export default {
           request({
             url: `${apiName}/${this.editId}`,
             method: 'get'
-          }).then(r => {
-            calcResponse(r, true)
-          }).finally(() => {
-            this.loading.detail = false
           })
+            .then((r) => {
+              calcResponse(r, true)
+            })
+            .finally(() => {
+              this.loading.detail = false
+            })
         }
         if (this.editDat) calcResponse({ ...this.editDat })
       } else {
         this.actionText = '添加'
         this.isEdit = false
-        this.addInit && this.addInit()
+        if (this.addInit) this.addInit()
       }
     },
-    close () {
-      this.beforeClose && this.beforeClose()
+    close() {
+      if (this.beforeClose) this.beforeClose()
       this.resetForm()
       // resetForm 不能清除隐藏字段，因此这俩隐藏字段手动删除
-      delete this.form.id
-      delete this.form.time
+      this.form.id = undefined
+      this.form.time = undefined
       this.$emit('close')
     },
-    submit () {
+    submit() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           if (this.sumbiting) return
           this.sumbiting = true
           // 如果有提交前执行方法，并且返回了数据，则要执行
           if (this.beforeSubmit) {
-            const beforeSubmit = this.beforeSubmit(data)
+            const beforeSubmit = this.beforeSubmit({ ...this.form })
             if (beforeSubmit != null) return
           }
           // 深拷贝提交数据
@@ -85,27 +87,29 @@ export default {
             url: this.isEdit ? `${apiName}/${this.editId || this.editDat.id}` : apiName,
             method: this.isEdit ? 'put' : 'post',
             data
-          }).then(r => {
-            // 如果有后执行函数，则执行该函数
-            this.afterSubmit && this.afterSubmit(r)
-            // 其他方法
-            this.$message.success(`${this.actionText}成功！`)
-            this.close()
-            // 尝试调用父组件的更新数据方法
-            const parent = this.$parent.resetData
-              ? this.$parent
-              : this.$parent.$parent.resetData
-                ? this.$parent.$parent
-                : { resetData () {} }
-            parent.resetData()
-          }).finally(() => {
-            this.sumbiting = false
           })
+            .then((r) => {
+              // 如果有后执行函数，则执行该函数
+              if (this.afterSubmit) this.afterSubmit(r)
+              // 其他方法
+              this.$message.success(`${this.actionText}成功！`)
+              this.close()
+              // 尝试调用父组件的更新数据方法
+              const parent = this.$parent.resetData
+                ? this.$parent
+                : this.$parent.$parent.resetData
+                  ? this.$parent.$parent
+                  : { resetData() {} }
+              parent.resetData()
+            })
+            .finally(() => {
+              this.sumbiting = false
+            })
         }
       })
     },
-    resetForm () {
-      this.$refs.ruleForm && this.$refs.ruleForm.resetFields()
+    resetForm() {
+      if (this.$refs.ruleForm) this.$refs.ruleForm.resetFields()
     }
   }
 }

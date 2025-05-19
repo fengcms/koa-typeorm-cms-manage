@@ -17,6 +17,7 @@
     "@vue/composition-api": "^1.0.0-rc.1",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^1.0.2",
+    "@wangeditor/plugin-md": "^1.0.0",
     "axios": "0.18.1",
     "bytemd": "^1.22.0",
     "dayjs": "^1.8.25",

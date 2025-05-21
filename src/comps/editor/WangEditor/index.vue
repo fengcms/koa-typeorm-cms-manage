@@ -33,7 +33,7 @@ export default {
   data() {
     return {
       editor: null,
-      html: '<p>hello</p>',
+      html: '',
       toolbarConfig: { ...toolbarConfig },
       editorConfig: {
         placeholder: '请输入内容...',
@@ -55,7 +55,7 @@ export default {
     value(val) {
       this.html = val
     },
-    content(val) {
+    html(val) {
       this.$emit('input', val)
     }
   },

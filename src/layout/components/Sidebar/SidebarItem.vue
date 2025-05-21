@@ -25,13 +25,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import path from 'path-browserify'
+import { pathResolve } from '@/utils/tools'
 import { isExternal } from '@/utils/validate'
-import {pathResolve} from '@/utils/tools'
+import path from 'path-browserify'
+import { mapState } from 'vuex'
+import FixiOSBug from './FixiOSBug'
 import Item from './Item'
 import AppLink from './Link'
-import FixiOSBug from './FixiOSBug'
 
 export default {
   name: 'SidebarItem',
@@ -52,7 +52,7 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     this.onlyOneChild = null
     return {}
   },
@@ -60,15 +60,15 @@ export default {
     ...mapState(['user'])
   },
   methods: {
-    hasOneShowingChild (children = [], parent) {
-      const showingChildren = children.filter(item => {
+    hasOneShowingChild(children, parent) {
+      children = children || []
+      const showingChildren = children.filter((item) => {
         if (item.hidden) {
           return false
-        } else {
-          // Temp set(will be used if only has one showing child)
-          this.onlyOneChild = item
-          return true
         }
+        // Temp set(will be used if only has one showing child)
+        this.onlyOneChild = item
+        return true
       })
 
       // When there is only one child router, the child router is displayed by default
@@ -78,13 +78,13 @@ export default {
 
       // Show parent if there are no child router to display
       if (showingChildren.length === 0) {
-        this.onlyOneChild = { ... parent, path: '', noShowingChildren: true }
+        this.onlyOneChild = { ...parent, path: '', noShowingChildren: true }
         return true
       }
 
       return false
     },
-    resolvePath (routePath) {
+    resolvePath(routePath) {
       if (isExternal(routePath)) {
         return routePath
       }
@@ -94,11 +94,11 @@ export default {
       return path.resolve(this.basePath, routePath)
       // return this.basePath + '/' + routePath
     },
-    hasRole (route) {
-      const { meta = {}} = route
+    hasRole(route) {
+      const { meta = {} } = route
       const { roles } = meta
       const { role } = this.user
-      return !roles || (roles.includes(role))
+      return !roles || roles.includes(role)
     }
   }
 }

@@ -124,19 +124,23 @@
       }
     }
 
-    .el-menu--collapse {
-      .el-submenu {
-        &>.el-submenu__title {
-          &>span {
-            height: 0;
-            width: 0;
-            overflow: hidden;
-            visibility: hidden;
-            display: inline-block;
-          }
-        }
+    .menu-item {
+      text-align: center;
+
+      .svg-icon {
+        margin-left: 20px;
+      }
+
+      .svg-icon+span {
+        height: 0;
+        width: 0;
+        overflow: hidden;
+        visibility: hidden;
+        display: inline-block;
       }
     }
+
+
   }
 
   .el-menu--collapse .el-menu .el-submenu {

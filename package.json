@@ -36,7 +36,9 @@
     "@biomejs/biome": "^1.9.4",
     "@vitejs/plugin-vue2": "^2.3.3",
     "@vitejs/plugin-vue2-jsx": "^1.1.1",
+    "fast-glob": "^3.3.3",
     "sass": "1.66.0",
-    "vite": "^6.2.4"
+    "vite": "^6.2.4",
+    "vite-plugin-svg-icons": "^2.0.1"
   }
 }

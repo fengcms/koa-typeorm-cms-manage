@@ -26,6 +26,9 @@
         <el-input v-model="form.mobile_copyright" type="textarea" :rows="3" style="width: 500px" />
         <Tip>支持HTML</Tip>
       </el-form-item>
+      <el-form-item label="联系我们" prop="mobile_copyright">
+        <el-input v-model="form.contact" type="textarea" :rows="3" style="width: 500px;" />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" :loading="pageInfo.sumbiting" @click="submit">保存</el-button>
         <el-button @click="resetForm">重置</el-button>

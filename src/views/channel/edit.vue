@@ -31,6 +31,11 @@
         <el-form-item label="栏目描述" prop="description">
           <el-input v-model="form.description" type="textarea" autocomplete="off" style="width: 500px" />
         </el-form-item>
+        <el-form-item label="栏目类型" clearable prop="type">
+          <el-radio-group v-model="form.type">
+            <el-radio v-for="i in base.type" :key="i.value" :label="i.value">{{ i.label }}</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="显示状态" clearable prop="status">
           <el-radio-group v-model="form.status">
             <el-radio v-for="i in base.status" :key="i.value" :label="i.value">{{ i.label }}</el-radio>
@@ -51,10 +56,11 @@ export default {
   mixins: [editDialog],
   props: {
     addPid: {
-      type: Number, default: 0
+      type: Number,
+      default: 0
     }
   },
-  data () {
+  data() {
     return {
       pageInfo: {
         apiName: 'channel'
@@ -66,6 +72,7 @@ export default {
         keywords: '',
         show_img: '',
         description: '',
+        type: 'ARTICLE',
         status: 'NORMAL'
       },
       base: {
@@ -74,6 +81,11 @@ export default {
         status: [
           { label: '显示', value: 'NORMAL' },
           { label: '隐藏', value: 'HIDE' }
+        ],
+        type: [
+          { label: '文章', value: 'ARTICLE' },
+          { label: '图文', value: 'PHOTO' },
+          { label: '视频', value: 'VIDEO' }
         ]
       },
       rules: {
@@ -81,47 +93,41 @@ export default {
           { required: true, message: '请输入栏目名称', trigger: 'blur' },
           { min: 1, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
         ],
-        pidArr: [
-          { required: true, type: 'array', message: '请选择归属栏目', trigger: 'blur' }
-        ],
-        sort: [
-          { required: true, type: 'number', message: '请输入栏目排序', trigger: 'blur' }
-        ],
-        website: [
-          { type: 'url', message: '网址格式不正确', trigger: 'blur' }
-        ]
+        pidArr: [{ required: true, type: 'array', message: '请选择归属栏目', trigger: 'blur' }],
+        sort: [{ required: true, type: 'number', message: '请输入栏目排序', trigger: 'blur' }],
+        website: [{ type: 'url', message: '网址格式不正确', trigger: 'blur' }]
       }
     }
   },
   methods: {
-    addInit () {
+    addInit() {
       this.form.pidArr = this.calcPidArr(this.addPid)
     },
-    beforeInit () {
+    beforeInit() {
       this.base.treeChannel[0].children = this.$store.state.article.treeChannel
       this.base.channel = this.$store.state.article.channel
     },
-    beforeGetData () {
+    beforeGetData() {
       this.base.treeChannel[0].children = this.$store.state.article.treeChannel
       this.base.channel = this.$store.state.article.channel
     },
-    afterGetData (data) {
+    afterGetData(data) {
       data.pidArr = this.calcPidArr(data.pid)
       return data
     },
-    calcSubmitData (data) {
+    calcSubmitData(data) {
       data.pid = data.pidArr.pop()
-      delete data.pidArr
+      data.pidArr = undefined
       return data
     },
-    afterSubmit () {
+    afterSubmit() {
       this.$store.dispatch('article/getChannel')
       this.$store.dispatch('article/getTreeChannel')
     },
-    calcPidArr (pid) {
+    calcPidArr(pid) {
       const channel = []
       const calcChan = (id) => {
-        const chanItem = this.base.channel.filter(i => i.id === id)[0]
+        const chanItem = this.base.channel.filter((i) => i.id === id)[0]
         channel.push(chanItem.id)
         if (chanItem.pid !== 0) calcChan(chanItem.pid)
       }

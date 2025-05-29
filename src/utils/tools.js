@@ -1,9 +1,12 @@
 // 精确校验数据格式方法
-export const toType = obj => {
-  return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
+export const toType = (obj) => {
+  return {}.toString
+    .call(obj)
+    .match(/\s([a-zA-Z]+)/)[1]
+    .toLowerCase()
 }
 // 滤空方法
-export const filterNull = o => {
+export const filterNull = (o) => {
   for (const key in o) {
     if (o[key] == null) delete o[key]
     if (toType(o[key]) === 'string') {
@@ -16,7 +19,7 @@ export const filterNull = o => {
       // console.log(o[key])
       o[key] = filterNull(o[key])
       // console.log(o[key])
-      o[key] = o[key].filter(arr => arr)
+      o[key] = o[key].filter((arr) => arr)
       if (o[key].length === 0) delete o[key]
     }
   }
@@ -38,15 +41,15 @@ export const checkBoxTool = (type, checkedItems, allItems, classItems) => {
   if (classItems) {
     // 组内选择功能
     // 计算当前项中已经选择的数据
-    classItems.forEach(i => {
+    classItems.forEach((i) => {
       checkedItems.includes(i) && classChecked.push(i)
     })
     // 在全部选择的数据中剔除当前组已选择的数据
-    classChecked.forEach(i => {
-      checkedItems.includes(i) && (delete checkedItems[checkedItems.indexOf(i)])
+    classChecked.forEach((i) => {
+      checkedItems.includes(i) && delete checkedItems[checkedItems.indexOf(i)]
     })
     // 删除数据后，需要给已选择数据过滤空
-    checkedItems = checkedItems.filter(i => i)
+    checkedItems = checkedItems.filter((i) => i)
   } else {
     // 全部数据功能处理
     classItems = allItems
@@ -63,7 +66,7 @@ export const checkBoxTool = (type, checkedItems, allItems, classItems) => {
       res = []
     },
     reverse: () => {
-      classItems.forEach(i => !classChecked.includes(i) && res.push(i))
+      classItems.forEach((i) => !classChecked.includes(i) && res.push(i))
     }
   }
   actions[type]()
@@ -85,14 +88,14 @@ export const makeElementTree = (params) => {
   const { pid, list, pidFiled, labelFiled, valueFiled, moreLevel = 99 } = params
   const makeTree = (pid, arr, level) => {
     const res = []
-    arr.forEach(i => {
+    arr.forEach((i) => {
       if (i[pidFiled] === pid) {
         const rep = level < moreLevel ? makeTree(i[valueFiled], list, level + 1) : []
         const obj = {
           label: i[labelFiled],
           value: i[valueFiled]
         }
-        rep.length && (obj.children = rep)
+        if (rep.length) obj.children = rep
         res.push(obj)
       }
     })
@@ -102,32 +105,36 @@ export const makeElementTree = (params) => {
 }
 
 // 如果是数据类型的值，则返回数字，否则返回原值
-export const calcNumberString = str => {
-  return str === '' ? '' : isNaN(str) ? str : +str
+export const calcNumberString = (str) => {
+  return str === '' ? '' : Number.isNaN(str) ? str : +str
 }
 
 // 富文本格式化函数
 export const HTMLDecode = (text) => {
-  var arrEntities = { lt: '<', gt: '>', nbsp: ' ', amp: '&', quot: '"' }
-  text = text.replace(/&(lt|gt|nbsp|amp|quot);/ig, function (all, t) { return arrEntities[t] })
-  text = text.replace(/&(lt|gt|nbsp|amp|quot);/ig, function (all, t) { return arrEntities[t] })
-  return text.replace(/&(lt|gt|nbsp|amp|quot);/ig, function (all, t) { return arrEntities[t] })
+  const arrEntities = { lt: '<', gt: '>', nbsp: ' ', amp: '&', quot: '"' }
+  text = text.replace(/&(lt|gt|nbsp|amp|quot);/gi, (all, t) => arrEntities[t])
+  text = text.replace(/&(lt|gt|nbsp|amp|quot);/gi, (all, t) => arrEntities[t])
+  text = text.replace(/&(lt|gt|nbsp|amp|quot);/gi, (all, t) => arrEntities[t])
 }
 // JSON 数据转 Url search 参数字符串
-export const obj2Url = obj => {
+export const obj2Url = (obj) => {
   obj = filterNull(obj)
-  return Object.keys(obj).map(i => `${i}=${obj[i]}`).join('&')
+  return Object.keys(obj)
+    .map((i) => `${i}=${obj[i]}`)
+    .join('&')
 }
 // Url search 参数字符串 转 JSON 数据
 export const url2Obj = (url = '') => {
   const obj = {}
-  url.slice(url.indexOf('?') + 1).split('&').forEach(i => {
-    const temp = i.split('=')
-    obj[temp[0]] = temp[1]
-  })
+  url
+    .slice(url.indexOf('?') + 1)
+    .split('&')
+    .forEach((i) => {
+      const temp = i.split('=')
+      obj[temp[0]] = temp[1]
+    })
   return filterNull(obj)
 }
-
 
 export const getImgUrl = (url) => {
   if (!url) return ''
@@ -136,29 +143,40 @@ export const getImgUrl = (url) => {
 }
 
 export function pathResolve(...segments) {
-  let resolvedPath = '';
+  let resolvedPath = ''
   for (const segment of segments) {
-    if (!segment) continue;
-    const normalized = segment.replace(/\\/g, '/').replace(/\/+/g, '/');
+    if (!segment) continue
+    const normalized = segment.replace(/\\/g, '/').replace(/\/+/g, '/')
     if (normalized.startsWith('/')) {
-      resolvedPath = normalized;
+      resolvedPath = normalized
     } else {
-      resolvedPath = resolvedPath ? `${resolvedPath}/${normalized}` : normalized;
+      resolvedPath = resolvedPath ? `${resolvedPath}/${normalized}` : normalized
     }
   }
-  
+
   // 处理相对路径（如./或../）
-  const parts = resolvedPath.split('/');
-  const resolvedParts = [];
+  const parts = resolvedPath.split('/')
+  const resolvedParts = []
   for (const part of parts) {
     if (part === '..') {
-      resolvedParts.pop();
+      resolvedParts.pop()
     } else if (part !== '.' && part !== '') {
-      resolvedParts.push(part);
+      resolvedParts.push(part)
     }
   }
-  
-  return resolvedParts.join('/') || '/';
+
+  return resolvedParts.join('/') || '/'
+}
+
+export function formatFileSize(bytes) {
+  if (bytes === 0) return '0 Bytes'
+
+  const units = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+  const base = 1024
+  const exponent = Math.floor(Math.log(bytes) / Math.log(base))
+  const size = (bytes / base ** exponent).toFixed(2)
+
+  return `${size} ${units[exponent]}`
 }
 export default {
   toType,
@@ -169,5 +187,6 @@ export default {
   HTMLDecode,
   obj2Url,
   url2Obj,
-  getImgUrl
+  getImgUrl,
+  formatFileSize
 }

@@ -9,7 +9,7 @@
     >
       <slot />
     </el-table>
-    <div class="page-pagination">
+    <div v-if="!hidePagination" class="page-pagination">
       <el-pagination
         background
         :layout="layout"
@@ -29,13 +29,13 @@ export default {
   props: {
     tableData: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
     pageResult: {
       type: Object,
-      default () {
+      default() {
         return {
           pageSize: 10,
           count: 0
@@ -54,6 +54,10 @@ export default {
       type: Function,
       default: () => {}
     },
+    hidePagination: {
+      type: Boolean,
+      default: false
+    },
     tableLoading: {
       type: Boolean,
       default: true
@@ -65,21 +69,21 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       hasPageSizeChangeFunc: false,
       layout: 'prev, pager, next'
     }
   },
-  mounted () {
+  mounted() {
     this.calcPageSizeChangeFunc()
   },
   methods: {
-    calcPageSizeChangeFunc () {
+    calcPageSizeChangeFunc() {
       this.hasPageSizeChangeFunc = this.pageSizeChange.name !== '_default'
-      this.hasPageSizeChangeFunc && (this.layout += ', sizes')
+      if (this.hasPageSizeChangeFunc) this.layout += ', sizes'
     },
-    goPageSizeChange (e) {
+    goPageSizeChange(e) {
       this.hasPageSizeChangeFunc && this.pageSizeChange(e)
     }
   }

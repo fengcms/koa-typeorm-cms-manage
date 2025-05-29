@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 import { toType } from '@/utils/tools'
 export default {
-  data () {
+  data() {
     return {
       editStatus: {
         showEdit: false,
@@ -12,14 +12,14 @@ export default {
     }
   },
   methods: {
-    addItem () {
+    addItem() {
       this.editStatus = {
         showEdit: true,
         editId: null,
         editDat: null
       }
     },
-    editItem (o) {
+    editItem(o) {
       if (toType(o) === 'object') {
         if (Object.keys(o).includes('$index')) {
           this.editStatus.editDat = o.row
@@ -34,7 +34,7 @@ export default {
         this.editStatus.showEdit = true
       }, 500)
     },
-    closeEditBox () {
+    closeEditBox() {
       this.editStatus = {
         showEdit: false,
         editId: null,
@@ -42,7 +42,7 @@ export default {
       }
     },
     // 删除行数据，兼容批量删除写法
-    delRowItem (id, dontConfirm) {
+    delRowItem(id, dontConfirm) {
       const delFunc = () => {
         const apiName = this.pageInfo.listApiName
         if (!apiName) {
@@ -52,8 +52,8 @@ export default {
         request({
           url: `${apiName}/${id}`,
           method: 'delete'
-        }).then(r => {
-          const { fail, succ } = r.data
+        }).then((r) => {
+          const { fail = [], succ = [] } = r.data
           if (succ.length) this.$message.success(`ID 为 ${succ.join(',')} 的${this.pageInfo.itemName}删除成功!`)
           if (fail.length) this.$message.error(`ID 为 ${fail.join(',')} 的${this.pageInfo.itemName}删除失败!`)
           this.getData()
@@ -68,7 +68,7 @@ export default {
       }
     },
     // 纯属装逼写的批量删除
-    batchDelRowItem () {
+    batchDelRowItem() {
       const arr = this.selectionArray
       const len = arr.length
       if (!len) {
@@ -78,7 +78,7 @@ export default {
       this.$confirm(`此操作将永久删除所选${this.pageInfo.itemName}, 是否继续?`, '提示', {
         type: 'warning'
       }).then(() => {
-        this.delRowItem(arr.map(r => r.id).join(','), true)
+        this.delRowItem(arr.map((r) => r.id).join(','), true)
       })
     }
   }

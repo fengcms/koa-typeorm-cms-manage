@@ -18,10 +18,10 @@ service.interceptors.request.use(
     }
     config.data = filterNull(config.data)
     config.params = filterNull(config.params)
+
     return config
   },
   (error) => {
-    // do something with request error
     console.log(error) // for debug
     return Promise.reject(error)
   }
@@ -30,6 +30,11 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   (response) => {
+    // 如果是文件下载，直接返回 response
+    if (response.config.responseType === 'blob') {
+      return Promise.resolve(response)
+    }
+
     const res = response.data
     if (response.status !== 200 || res.status !== 0) {
       Message({

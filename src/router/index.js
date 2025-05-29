@@ -48,12 +48,14 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '后台首页', icon: 'dashboard' }
-    }]
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '后台首页', icon: 'dashboard' }
+      }
+    ]
   },
   {
     path: '/article',
@@ -64,11 +66,13 @@ export const constantRoutes = [
         path: '',
         component: () => import('@/views/article/list'),
         meta: { title: '文章列表' }
-      }, {
+      },
+      {
         path: 'add',
         component: () => import('@/views/article/edit'),
         meta: { title: '添加文章' }
-      }, {
+      },
+      {
         path: 'edit/:id',
         component: () => import('@/views/article/edit'),
         hidden: true,
@@ -97,11 +101,13 @@ export const constantRoutes = [
         path: '',
         component: () => import('@/views/single/list'),
         meta: { title: '单页列表' }
-      }, {
+      },
+      {
         path: 'add',
         component: () => import('@/views/single/edit'),
         meta: { title: '添加单页' }
-      }, {
+      },
+      {
         path: 'edit/:id',
         component: () => import('@/views/single/edit'),
         hidden: true,
@@ -188,6 +194,11 @@ export const constantRoutes = [
         meta: { title: '基本信息配置' }
       },
       {
+        path: 'backup',
+        component: () => import('@/views/system/backup'),
+        meta: { title: '数据库备份' }
+      },
+      {
         path: 'manages',
         component: () => import('@/views/system/manages/list'),
         meta: { title: '超级管理员管理', roles: ['admin'] }
@@ -214,16 +225,17 @@ export const constantRoutes = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-})
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    routes: constantRoutes
+  })
 
 const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter () {
+export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
 }
